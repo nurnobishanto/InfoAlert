@@ -21,8 +21,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"
+            android:theme="@style/Theme.InfoAlert.NoActionBar"/>
     </application>
 
 </manifest>
