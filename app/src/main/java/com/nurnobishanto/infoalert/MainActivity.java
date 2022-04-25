@@ -11,9 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.nurnobishanto.infoalert.Fragment.AboutFragment;
 import com.nurnobishanto.infoalert.Fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -46,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("Home");
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                                 new HomeFragment()).commit();
+                        break;
+                    case R.id.nav_about:
+                        drawer.closeDrawer(GravityCompat.START);
+                        getSupportActionBar().setTitle("About");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                                new AboutFragment()).commit();
                         break;
 
                 }
