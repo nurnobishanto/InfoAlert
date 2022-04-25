@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.nurnobishanto.infoalert.Fragment.AboutFragment;
 import com.nurnobishanto.infoalert.Fragment.HomeFragment;
+import com.nurnobishanto.infoalert.Fragment.ProblemsListFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("Home");
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                                 new HomeFragment()).commit();
+                        break;
+                    case R.id.nav_problem_list:
+                        drawer.closeDrawer(GravityCompat.START);
+                        getSupportActionBar().setTitle("Problems");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                                new ProblemsListFragment()).commit();
                         break;
                     case R.id.nav_about:
                         drawer.closeDrawer(GravityCompat.START);
