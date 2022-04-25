@@ -7,6 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -58,6 +61,18 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("About");
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                                 new AboutFragment()).commit();
+                        break;
+                    case R.id.nav_rate_us:
+
+                        try {
+                            Uri marketUri = Uri.parse("market://details?id=" + getPackageName());
+                            Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                            startActivity(marketIntent);
+                        }catch(ActivityNotFoundException e) {
+                            Uri marketUri = Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName());
+                            Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                            startActivity(marketIntent);
+                        }
                         break;
 
                 }
