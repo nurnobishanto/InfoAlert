@@ -1,66 +1,133 @@
 package com.nurnobishanto.infoalert.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.nurnobishanto.infoalert.Adapter.Adapter;
+import com.nurnobishanto.infoalert.Constant;
+import com.nurnobishanto.infoalert.Model.Model;
 import com.nurnobishanto.infoalert.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PendingFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class PendingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public PendingFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PendingFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PendingFragment newInstance(String param1, String param2) {
-        PendingFragment fragment = new PendingFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    private ArrayList<Object> mListItems = new ArrayList<>();
+    private RecyclerView mRecyclerView;
+    private Adapter adapter;
+    private LinearLayoutManager linearLayoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String deviceID;
+    @SuppressLint("HardwareIds")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pending, container, false);
+        View view = inflater.inflate(R.layout.fragment_pending, container, false);
+        mRecyclerView = view.findViewById(R.id.myRecyclerView);
+        swipeRefreshLayout = view.findViewById(R.id.swipe);
+        linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        swipeRefreshLayout.setRefreshing(false);
+        getData();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
+        deviceID = Settings.Secure.getString(getContext().getContentResolver(),Settings.Secure.ANDROID_ID);
+        return view;
+    }
+    private  void getData()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        mListItems.clear();
+        StringRequest request = new StringRequest(Request.Method.POST, Constant.PENDING, response ->{
+
+            try {
+                JSONObject object = new JSONObject(response);
+                if(object.getBoolean("status")){
+                    JSONArray array = object.getJSONArray("complain");
+                    for (int i = 0;i<array.length();i++){
+                        JSONObject obj = array.getJSONObject(i);
+                        Model item = new Model();
+
+                        item.setId(obj.getString("id"));
+                        item.setTitle(obj.getString("title"));
+                        item.setComplain(obj.getString("complain"));
+                        item.setStatus(obj.getString("type"));
+                        item.setCategory(obj.getString("category"));
+                        item.setDate(obj.getString("created_at"));
+                        item.setImage(obj.getString("image"));
+                        item.setDevice(obj.getString("device"));
+
+                        mListItems.add(item);
+                    }
+
+
+                    //Create adapter
+                    adapter = new Adapter(mListItems, new Adapter.MyRecyclerViewItemClickListener()
+                    {
+                        //Handling clicks
+                        @Override
+                        public void onItemClicked(Model model)
+                        {
+
+
+                        }
+                    });
+
+                    //Set adapter to RecyclerView
+                    mRecyclerView.setAdapter(adapter);
+                    swipeRefreshLayout.setRefreshing(false);
+
+
+                }
+
+
+            }catch (JSONException e){
+                e.printStackTrace();
+                swipeRefreshLayout.setRefreshing(false);
+
+            }
+
+        },error -> {
+            error.printStackTrace();
+            swipeRefreshLayout.setRefreshing(false);
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String,String> map = new HashMap<>();
+                map.put("device", deviceID);
+                return  map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(request);
+
     }
 }

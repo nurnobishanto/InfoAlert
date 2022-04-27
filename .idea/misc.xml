@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/drawable/ic_pending.xml" value="0.3172343670564311" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_app_related.xml" value="0.14479166666666668" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_main.xml" value="0.278125" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_necessary.xml" value="0.3" />
@@ -12,9 +13,11 @@
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_about.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_completed.xml" value="0.278125" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_home.xml" value="0.3" />
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_pending.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_problems_list.xml" value="0.278125" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_submitted.xml" value="0.278125" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/row_itm.xml" value="0.5" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/menu/activity_main_drawer.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/xml/network_security_config.xml" value="0.2765625" />
       </map>

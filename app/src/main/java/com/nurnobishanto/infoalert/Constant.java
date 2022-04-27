@@ -3,6 +3,9 @@ package com.nurnobishanto.infoalert;
 public class Constant {
     public static final String URL = "http://192.168.0.104/";
     public static final String HOME = URL+"api";
-    public static final String ADD_COMPLAIN = HOME+"/check";
-    public static final String CHECK = HOME+"/check";
+    public static final String ADD_COMPLAIN = HOME+"/create";
+
+    public static final String SUBMITTED = HOME+"/submit";
+    public static final String PENDING = HOME+"/pending";
+    public static final String SOLVED = HOME+"/solved";
 }
