@@ -47,44 +47,47 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new HomeFragment()).commit();
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        drawer.closeDrawer(GravityCompat.START);
-                        getSupportActionBar().setTitle("Home");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                                new HomeFragment()).commit();
-                        break;
-                    case R.id.nav_problem_list:
-                        drawer.closeDrawer(GravityCompat.START);
-                        getSupportActionBar().setTitle("Problems");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                                new ProblemsListFragment()).commit();
-                        break;
-                    case R.id.nav_about:
-                        drawer.closeDrawer(GravityCompat.START);
-                        getSupportActionBar().setTitle("About");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                                new AboutFragment()).commit();
-                        break;
-                    case R.id.nav_rate_us:
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.nav_home:
+                    drawer.closeDrawer(GravityCompat.START);
+                    getSupportActionBar().setTitle("Home");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                            new HomeFragment()).commit();
+                    break;
+                case R.id.nav_problem_list:
+                    drawer.closeDrawer(GravityCompat.START);
+                    getSupportActionBar().setTitle("Problems");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                            new ProblemsListFragment()).commit();
+                    break;
+                case R.id.nav_app_related:
+                    startActivity(new Intent(this,AppRelatedActivity.class));
+                    break;
+                case R.id.nav_necessary:
+                    startActivity(new Intent(this,NecessaryActivity.class));
+                    break;
+                case R.id.nav_about:
+                    drawer.closeDrawer(GravityCompat.START);
+                    getSupportActionBar().setTitle("About");
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                            new AboutFragment()).commit();
+                    break;
+                case R.id.nav_rate_us:
 
-                        try {
-                            Uri marketUri = Uri.parse("market://details?id=" + getPackageName());
-                            Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                            startActivity(marketIntent);
-                        }catch(ActivityNotFoundException e) {
-                            Uri marketUri = Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName());
-                            Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
-                            startActivity(marketIntent);
-                        }
-                        break;
+                    try {
+                        Uri marketUri = Uri.parse("market://details?id=" + getPackageName());
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                        startActivity(marketIntent);
+                    }catch(ActivityNotFoundException e) {
+                        Uri marketUri = Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName());
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW, marketUri);
+                        startActivity(marketIntent);
+                    }
+                    break;
 
-                }
-                return true;
             }
+            return true;
         });
     }
     boolean doubleBackToExitPressedOnce = false;

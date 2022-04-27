@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_app_related.xml" value="0.14479166666666668" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_main.xml" value="0.278125" />
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_necessary.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/activity_splash.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/app_bar_main.xml" value="0.3" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/content_main.xml" value="0.3" />
@@ -14,6 +16,7 @@
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/fragment_submitted.xml" value="0.278125" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/layout/nav_header_main.xml" value="0.25" />
         <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/menu/activity_main_drawer.xml" value="0.3" />
+        <entry key="..\:/Users/mdnur/AndroidStudioProjects/InfoAlert/app/src/main/res/xml/network_security_config.xml" value="0.2765625" />
       </map>
     </option>
   </component>

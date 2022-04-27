@@ -1,11 +1,13 @@
-package com.nurnobishanto.infoalert.Fragment;
+package com.nurnobishanto.infoalert;
 
-import static android.app.Activity.RESULT_OK;
-import static androidx.core.content.ContextCompat.getSystemService;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -16,28 +18,15 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
-
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -62,26 +51,17 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.nurnobishanto.infoalert.AppRelatedActivity;
-import com.nurnobishanto.infoalert.Constant;
-import com.nurnobishanto.infoalert.R;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
-public class HomeFragment extends Fragment {
+public class NecessaryActivity extends AppCompatActivity {
 
     private TextView changeImage;
     private ImageView postImage;
@@ -99,19 +79,22 @@ public class HomeFragment extends Fragment {
     StorageReference storageReference;
     FusedLocationProviderClient mFusedLocationClient;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        changeImage = view.findViewById(R.id.changeImage);
-        postImage = view.findViewById(R.id.postImage);
-        addPostBtn = view.findViewById(R.id.addPost);
-        postTitle = view.findViewById(R.id.postTitle);
-        postDesc = view.findViewById(R.id.postDesc);
-        postTileLayout = view.findViewById(R.id.titleInputLayout);
-        postDescLayout = view.findViewById(R.id.descInputLayout);
-        locationet = view.findViewById(R.id.location);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Necessary Complain");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_necessary);
+
+
+        changeImage = findViewById(R.id.changeImage);
+        postImage = findViewById(R.id.postImage);
+        addPostBtn = findViewById(R.id.addPost);
+        postTitle = findViewById(R.id.postTitle);
+        postDesc = findViewById(R.id.postDesc);
+        postTileLayout = findViewById(R.id.titleInputLayout);
+        postDescLayout = findViewById(R.id.descInputLayout);
+        locationet = findViewById(R.id.location);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
         storageReference = FirebaseStorage.getInstance().getReference("Image");
         addPostBtn.setOnClickListener(new View.OnClickListener() {
@@ -186,12 +169,10 @@ public class HomeFragment extends Fragment {
 
             }
         });
-        deviceID = Settings.Secure.getString(getContext().getContentResolver(),Settings.Secure.ANDROID_ID);
-        return view;
+        deviceID = Settings.Secure.getString(getContentResolver(),Settings.Secure.ANDROID_ID);
     }
-
     private void AddPost(String url) {
-        ProgressDialog dialog = new ProgressDialog(getContext());
+        ProgressDialog dialog = new ProgressDialog(this);
         dialog.setTitle("Posting");
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
@@ -201,26 +182,23 @@ public class HomeFragment extends Fragment {
             try {
                 JSONObject object = new JSONObject(response);
                 if(object.getBoolean("status")){
-                    Toast.makeText(getContext(),object.getString("message"),Toast.LENGTH_LONG).show();
-                    postTitle.setText("");
-                    postDesc.setText("");
-                    postImage.setImageDrawable(null);
-                    //finish();
+                    Toast.makeText(this,object.getString("message"),Toast.LENGTH_LONG).show();
+                    finish();
                 }
                 else {
-                    Toast.makeText(getContext(),object.getString("message"),Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,object.getString("message"),Toast.LENGTH_LONG).show();
                 }
 
             }catch (JSONException e){
                 e.printStackTrace();
-                Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
 
             }
 
             dialog.dismiss();
         },error -> {
             error.printStackTrace();
-            Toast.makeText(getContext(),"error",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"error",Toast.LENGTH_LONG).show();
             dialog.dismiss();
 
         }){
@@ -235,14 +213,14 @@ public class HomeFragment extends Fragment {
                 map.put("device", deviceID);
                 map.put("latitude", latitude+"");
                 map.put("longitude", longitude+"");
-                map.put("category", "GENERAL");
+                map.put("category", "NECESSARY");
                 if (!url.equals("null")) {
                     map.put("pic", url);
                 }
                 return  map;
             }
         };
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+        RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
     }
 
@@ -278,13 +256,13 @@ public class HomeFragment extends Fragment {
 
     @SuppressLint({"SetTextI18n", "LongLogTag"})
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == PICK_POST_IMAGE){
             postimageUri = data.getData();
             try {
                 //Getting the Bitmap from Gallery
-                postbitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), postimageUri);
+                postbitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), postimageUri);
                 //Setting the Bitmap to ImageView
                 postImage.setImageBitmap(postbitmap);
             }
@@ -300,8 +278,17 @@ public class HomeFragment extends Fragment {
 
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
+    }
 
     private void getLastLocation() {
         // check if permissions are given
@@ -314,7 +301,7 @@ public class HomeFragment extends Fragment {
                 // location from
                 // FusedLocationClient
                 // object
-                if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -336,7 +323,7 @@ public class HomeFragment extends Fragment {
                     }
                 });
             } else {
-                Toast.makeText(getContext(), "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(intent);
             }
@@ -369,8 +356,8 @@ public class HomeFragment extends Fragment {
 
         // setting LocationRequest
         // on FusedLocationClient
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -386,7 +373,7 @@ public class HomeFragment extends Fragment {
 
     // method to check for permissions
     private boolean checkPermissions() {
-        return ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
         // If we want background location
         // on Android 10.0 and higher,
@@ -396,15 +383,15 @@ public class HomeFragment extends Fragment {
 
     // method to request for permissions
     private void requestPermissions() {
-        ActivityCompat.requestPermissions(getActivity() , new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
+        ActivityCompat.requestPermissions(this, new String[]{
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ID);
     }
 
     // method to check
     // if location is enabled
     private boolean isLocationEnabled() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
@@ -430,7 +417,7 @@ public class HomeFragment extends Fragment {
     }
     public String GetFileExtension(Uri uri) {
 
-        ContentResolver contentResolver = getActivity().getContentResolver();
+        ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
 
@@ -441,7 +428,7 @@ public class HomeFragment extends Fragment {
 
         if (postimageUri != null) {
 
-            final ProgressDialog pd = new ProgressDialog(getContext());
+            final ProgressDialog pd = new ProgressDialog(this);
             pd.setMessage("Image Uploading..");
             pd.show();
             final StorageReference ref = storageReference.child(System.currentTimeMillis() + "." + GetFileExtension(postimageUri));
@@ -471,12 +458,15 @@ public class HomeFragment extends Fragment {
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                         Uri downloadUri = task.getResult();
-                        Toast.makeText(getActivity().getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+
                         AddPost(downloadUri.toString());
+
                     } else {
                         // Handle failures
                         // ...
-                        Toast.makeText(getActivity().getApplicationContext(), "Image Uploaded Failed ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Image Uploaded Failed ", Toast.LENGTH_LONG).show();
+
                     }
                     pd.dismiss();
                 }
@@ -486,8 +476,6 @@ public class HomeFragment extends Fragment {
 
         }
     }
-
-
 
 
 
