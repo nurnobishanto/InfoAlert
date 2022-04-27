@@ -5,16 +5,17 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.ProblemsListFragment">
+
     <com.google.android.material.tabs.TabLayout
-        android:layout_alignParentTop="true"
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        app:tabSelectedTextColor="@color/white"
-        app:tabTextColor="#B6FFFFFF"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/white"
-        app:tabRippleColor="@color/white"
-        android:background="@color/black"/>
+        android:layout_alignParentTop="true"
+        android:background="#D8D8D8"
+        app:tabIndicatorColor="@color/black"
+        app:tabRippleColor="@color/black"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="#B6262626" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"

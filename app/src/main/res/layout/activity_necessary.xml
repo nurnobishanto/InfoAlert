@@ -70,7 +70,8 @@
             android:id="@+id/postImage" />
         <Button
             android:layout_width="match_parent"
-            android:text="Create Post"
+            android:text="@string/submit"
+            android:textAllCaps="false"
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:id="@+id/addPost"

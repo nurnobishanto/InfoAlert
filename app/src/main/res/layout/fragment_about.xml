@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:background="@color/white"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,5 +23,6 @@
         android:autoLink="all"
         android:text="email@email.com"
         android:gravity="center"
+        android:textColorLink="@color/submitted"
         android:textColor="@color/black"/>
 </LinearLayout>
