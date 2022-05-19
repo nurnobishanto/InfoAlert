@@ -68,8 +68,8 @@ public class AppRelatedActivity extends AppCompatActivity {
 
     private TextView changeImage;
     private ImageView postImage;
-    private TextInputLayout postTileLayout,postDescLayout;
-    private TextInputEditText postTitle,postDesc,locationet;
+    private TextInputLayout postTileLayout,postDescLayout,phoneLayout,addressLayout;
+    private TextInputEditText postTitle,postDesc,locationet,phone,address;
     private Button addPostBtn;
     private static final int PICK_POST_IMAGE = 105;
 
@@ -92,7 +92,10 @@ public class AppRelatedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_related);
 
 
-
+        phone = findViewById(R.id.phone);
+        address = findViewById(R.id.address);
+        phoneLayout = findViewById(R.id.phoneInputLayout);
+        addressLayout = findViewById(R.id.addrInputLayout);
         changeImage = findViewById(R.id.changeImage);
         postImage = findViewById(R.id.postImage);
         addPostBtn = findViewById(R.id.addPost);
@@ -153,7 +156,50 @@ public class AppRelatedActivity extends AppCompatActivity {
 
             }
         });
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (phone.getText().toString().length()<11){
+                    phoneLayout.setErrorEnabled(true);
+                    phoneLayout.setError("Phone must be at least 11 Character!");
+                }else {
+                    phoneLayout.setErrorEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        address.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (address.getText().toString().length()<10){
+                    addressLayout.setErrorEnabled(true);
+                    addressLayout.setError("Address must be at least 10 Character!");
+                }else {
+                    addressLayout.setErrorEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         postDesc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -218,6 +264,8 @@ public class AppRelatedActivity extends AppCompatActivity {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("title", Objects.requireNonNull(postTitle.getText()).toString());
                 map.put("complain", Objects.requireNonNull(postDesc.getText()).toString());
+                map.put("phone", Objects.requireNonNull(phone.getText()).toString());
+                map.put("address", Objects.requireNonNull(address.getText()).toString());
                 map.put("device", deviceID);
                 map.put("latitude", latitude+"");
                 map.put("longitude", longitude+"");
@@ -255,8 +303,20 @@ public class AppRelatedActivity extends AppCompatActivity {
             postDescLayout.setError("Complain Description must be at least 10 Character!");
             return false;
         }
-        else {
+        else if (address.getText().toString().length()<10){
             postDescLayout.setErrorEnabled(false);
+            addressLayout.setErrorEnabled(true);
+            addressLayout.setError("Address must be at least 10 Character!");
+            return false;
+        }
+        else if (phone.getText().toString().length()<10){
+            addressLayout.setErrorEnabled(false);
+            phoneLayout.setErrorEnabled(true);
+            phoneLayout.setError("Phone must be at least 10 Character!");
+            return false;
+        }
+        else {
+            phoneLayout.setErrorEnabled(false);
             return true;
         }
 

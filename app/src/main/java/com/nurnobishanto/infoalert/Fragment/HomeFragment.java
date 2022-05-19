@@ -85,8 +85,8 @@ public class HomeFragment extends Fragment {
 
     private TextView changeImage;
     private ImageView postImage;
-    private TextInputLayout postTileLayout,postDescLayout;
-    private TextInputEditText postTitle,postDesc,locationet;
+    private TextInputLayout postTileLayout,postDescLayout,phoneLayout,addressLayout;
+    private TextInputEditText postTitle,postDesc,locationet,phone,address;
     private Button addPostBtn;
     private static final int PICK_POST_IMAGE = 105;
 
@@ -107,6 +107,10 @@ public class HomeFragment extends Fragment {
         postImage = view.findViewById(R.id.postImage);
         addPostBtn = view.findViewById(R.id.addPost);
         postTitle = view.findViewById(R.id.postTitle);
+        phone = view.findViewById(R.id.phone);
+        address = view.findViewById(R.id.address);
+        phoneLayout = view.findViewById(R.id.phoneInputLayout);
+        addressLayout = view.findViewById(R.id.addrInputLayout);
         postDesc = view.findViewById(R.id.postDesc);
         postTileLayout = view.findViewById(R.id.titleInputLayout);
         postDescLayout = view.findViewById(R.id.descInputLayout);
@@ -164,6 +168,50 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (phone.getText().toString().length()<11){
+                    phoneLayout.setErrorEnabled(true);
+                    phoneLayout.setError("Phone must be at least 11 Character!");
+                }else {
+                    phoneLayout.setErrorEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        address.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (address.getText().toString().length()<10){
+                    addressLayout.setErrorEnabled(true);
+                    addressLayout.setError("Address must be at least 10 Character!");
+                }else {
+                    addressLayout.setErrorEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         postDesc.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -204,6 +252,8 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(),object.getString("message"),Toast.LENGTH_LONG).show();
                     postTitle.setText("");
                     postDesc.setText("");
+                    phone.setText("");
+                    address.setText("");
                     postImage.setImageDrawable(null);
                     //finish();
                 }
@@ -220,7 +270,7 @@ public class HomeFragment extends Fragment {
             dialog.dismiss();
         },error -> {
             error.printStackTrace();
-            Toast.makeText(getContext(),"error",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
             dialog.dismiss();
 
         }){
@@ -232,6 +282,8 @@ public class HomeFragment extends Fragment {
                 HashMap<String,String> map = new HashMap<>();
                 map.put("title", Objects.requireNonNull(postTitle.getText()).toString());
                 map.put("complain", Objects.requireNonNull(postDesc.getText()).toString());
+                map.put("phone", Objects.requireNonNull(phone.getText()).toString());
+                map.put("address", Objects.requireNonNull(address.getText()).toString());
                 map.put("device", deviceID);
                 map.put("latitude", latitude+"");
                 map.put("longitude", longitude+"");
@@ -269,8 +321,20 @@ public class HomeFragment extends Fragment {
             postDescLayout.setError("Complain Description must be at least 10 Character!");
             return false;
         }
-        else {
+        else if (address.getText().toString().length()<10){
             postDescLayout.setErrorEnabled(false);
+            addressLayout.setErrorEnabled(true);
+            addressLayout.setError("Address must be at least 10 Character!");
+            return false;
+        }
+        else if (phone.getText().toString().length()<10){
+            addressLayout.setErrorEnabled(false);
+            phoneLayout.setErrorEnabled(true);
+            phoneLayout.setError("Phone must be at least 10 Character!");
+            return false;
+        }
+        else {
+            phoneLayout.setErrorEnabled(false);
             return true;
         }
 

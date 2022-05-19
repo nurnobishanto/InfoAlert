@@ -8,12 +8,16 @@
     android:orientation="vertical"
     android:gravity="center"
     tools:context=".Fragment.AboutFragment">
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@mipmap/ic_launcher"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:text="@string/app_name"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:gravity="center"
         android:textColor="@color/black"/>
     <TextView
@@ -21,7 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:autoLink="all"
-        android:text="email@email.com"
+        android:text="https://infoalertadmin.team-fawkes.com/"
+        android:gravity="center"
+        android:textColorLink="@color/submitted"
+        android:textColor="@color/black"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="25sp"
+        android:text="Team Fawkes"
         android:gravity="center"
         android:textColorLink="@color/submitted"
         android:textColor="@color/black"/>
