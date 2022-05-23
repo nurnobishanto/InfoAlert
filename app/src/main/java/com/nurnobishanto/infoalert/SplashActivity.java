@@ -8,11 +8,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SplashActivity extends AppCompatActivity {
     float i;
-    public TextView splashTesxt;
+    public ImageView splashTesxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        splashTesxt =(TextView)findViewById(R.id.SpashtextId);
+        splashTesxt =(ImageView)findViewById(R.id.SpashtextId);
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -42,10 +43,10 @@ public class SplashActivity extends AppCompatActivity {
     }
     public void doWork()
     {
-        for (i=0;i<1;i+=0.01)
+        for (i=0;i<3;i+=0.01)
         {
             try {
-                Thread.sleep(25);
+                Thread.sleep(10);
                 splashTesxt.setScaleX(i);
                 splashTesxt.setScaleY(i);
 
